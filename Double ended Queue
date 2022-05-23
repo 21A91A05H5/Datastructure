@@ -1,0 +1,178 @@
+/* DOUBLE ENDED CIRCULAR QUEUE
+4 OPERATIONS 
+enque,deque at rear
+enque,deque at front
+enque at front --> front--  at rear --> rear++
+deque at front --> front++  at rear --> rear-- 
+*/
+#include<stdio.h>
+#include<stdlib.h>
+int rear=-1,front=-1;
+int size,*que;
+void enque_rear(int val)
+{
+	if((front==0 && rear==size-1) || rear+1==front)
+	{
+		printf("Queue is overflow\n");
+	}
+	else if(rear==-1 && front==-1)
+	{
+		front=0;
+		rear=0;
+		que[rear]=val;
+	}
+	else
+	{
+		rear=(rear+1)%size;
+		que[rear]=val;
+	}
+}
+void enque_front(int val)
+{
+	if((front==0 && rear==size-1) || rear+1==front)
+	{
+		printf("Queue is overflow\n");
+	}
+	else if(rear==-1 && front==-1)
+	{
+		front=0;
+		rear=0;
+		que[front]=val;
+	}
+	else
+	{
+		if(front==0)
+		{
+			front=size-1;
+		}
+		else
+		{
+			front--;
+		}
+		que[front]=val;
+	}	
+}
+int deque_rear()
+{
+	int val;
+	if(front==-1 && rear==-1)
+	{
+		return -1;
+	}
+	if(front==rear)
+	{
+		val=que[front];
+		front=-1;
+		rear=-1;
+		return val;
+	}
+	val=que[rear];
+	if(rear==0)
+	{
+		rear=size-1;
+	}
+	else
+	{
+		rear--;
+	}
+	return val;
+}
+int deque_front()
+{
+	int val;
+	if(front==-1 && rear==-1)
+	{
+		return -1;
+	}
+	if(front==rear)
+	{
+		val=que[front];
+		front=-1;
+		rear=-1;
+		return val;
+	}
+	val=que[front];
+	front=(front+1)%size;
+	return val;
+}
+void display()
+{
+	int i,j;
+	if(front==-1 && rear==-1)
+	{
+		printf("Underflow\n");
+	}
+	else
+	{
+		i=front;
+		j=rear;
+		while(i!=j)
+		{
+			printf("%d %d\n",i,que[i]);
+			i=(i+1)%size;
+		}
+		printf("%d %d\n",j,que[j]);
+	}
+	
+}
+int main()
+{
+	int i,ch,val;
+	scanf("%d",&size);//size of queue
+	que=(int *)calloc(size,sizeof(int));
+	while(1)
+	{
+		printf("1.ENQUE at rear 2.DEQUE at rear 3.ENQUE at front 4.DEQUE at front 5.DISPLAY 6.EXIT :- ");
+		scanf("%d",&ch);
+		if(ch==1)
+		{
+			//enque at rear
+			scanf("%d",&val);
+			enque_rear(val);
+		}
+		else if(ch==2)
+		{
+			//deque at rear
+			val=deque_rear();
+			if(val==-1)
+			{
+				printf("Queue is underflow\n");
+			}
+			else
+			{
+				printf("%d\n",val);
+			}
+		}
+		else if(ch==3)
+		{
+			//enque at front
+			scanf("%d",&val);
+			enque_front(val);
+		}
+		else if(ch==4)
+		{
+			//deque at front
+			val=deque_front();
+			if(val==-1)
+			{
+				printf("Queue is underflow\n");
+			}
+			else
+			{
+				printf("%d\n",val);
+			}	
+		}
+		else if(ch==5)
+		{
+			display();
+		}
+		else if(ch==6)
+		{
+			break;
+		}
+		else
+		{
+			printf("Invalid Number\n");
+		}
+	}
+}
